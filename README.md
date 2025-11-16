@@ -1,324 +1,308 @@
+# Experiment 3: DML Commands
+
 ## AIM
-To study and implement DDL commands and different types of constraints.
+To study and implement DML (Data Manipulation Language) commands.
 
 ## THEORY
 
-### 1. CREATE
-Used to create a new relation (table).
-
+### 1. INSERT INTO
+Used to add records into a relation.
+These are three type of INSERT INTO queries which are as
+A)Inserting a single record
+**Syntax (Single Row):**
+```sql
+INSERT INTO table_name (field_1, field_2, ...) VALUES (value_1, value_2, ...);
+```
+**Syntax (Multiple Rows):**
+```sql
+INSERT INTO table_name (field_1, field_2, ...) VALUES
+(value_1, value_2, ...),
+(value_3, value_4, ...);
+```
+**Syntax (Insert from another table):**
+```sql
+INSERT INTO table_name SELECT * FROM other_table WHERE condition;
+```
+### 2. UPDATE
+Used to modify records in a relation.
+Syntax:
+```sql
+UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition;
+```
+### 3. DELETE
+Used to delete records from a relation.
+**Syntax (All rows):**
+```sql
+DELETE FROM table_name;
+```
+**Syntax (Specific condition):**
+```sql
+DELETE FROM table_name WHERE condition;
+```
+### 4. SELECT
+Used to retrieve records from a table.
 **Syntax:**
 ```sql
-CREATE TABLE (
-  field_1 data_type(size),
-  field_2 data_type(size),
-  ...
-);
-```
-### 2. ALTER
-Used to add, modify, drop, or rename fields in an existing relation.
-(a) ADD
-```sql
-ALTER TABLE std ADD (Address CHAR(10));
-```
-(b) MODIFY
-```sql
-ALTER TABLE relation_name MODIFY (field_1 new_data_type(size));
-```
-(c) DROP
-```sql
-ALTER TABLE relation_name DROP COLUMN field_name;
-```
-(d) RENAME
-```sql
-ALTER TABLE relation_name RENAME COLUMN old_field_name TO new_field_name;
-```
-### 3. DROP TABLE
-Used to permanently delete the structure and data of a table.
-```sql
-DROP TABLE relation_name;
-```
-### 4. RENAME
-Used to rename an existing database object.
-```sql
-RENAME TABLE old_relation_name TO new_relation_name;
-```
-### CONSTRAINTS
-Constraints are used to specify rules for the data in a table. If there is any violation between the constraint and the data action, the action is aborted by the constraint. It can be specified when the table is created (using CREATE TABLE) or after it is created (using ALTER TABLE).
-### 1. NOT NULL
-When a column is defined as NOT NULL, it becomes mandatory to enter a value in that column.
-Syntax:
-```sql
-CREATE TABLE Table_Name (
-  column_name data_type(size) NOT NULL
-);
-```
-### 2. UNIQUE
-Ensures that values in a column are unique.
-Syntax:
-```sql
-CREATE TABLE Table_Name (
-  column_name data_type(size) UNIQUE
-);
-```
-### 3. CHECK
-Specifies a condition that each row must satisfy.
-Syntax:
-```sql
-CREATE TABLE Table_Name (
-  column_name data_type(size) CHECK (logical_expression)
-);
-```
-### 4. PRIMARY KEY
-Used to uniquely identify each record in a table.
-Properties:
-Must contain unique values.
-Cannot be null.
-Should contain minimal fields.
-Syntax:
-```sql
-CREATE TABLE Table_Name (
-  column_name data_type(size) PRIMARY KEY
-);
-```
-### 5. FOREIGN KEY
-Used to reference the primary key of another table.
-Syntax:
-```sql
-CREATE TABLE Table_Name (
-  column_name data_type(size),
-  FOREIGN KEY (column_name) REFERENCES other_table(column)
-);
-```
-### 6. DEFAULT
-Used to insert a default value into a column if no value is specified.
-
-Syntax:
-```sql
-CREATE TABLE Table_Name (
-  col_name1 data_type,
-  col_name2 data_type,
-  col_name3 data_type DEFAULT 'default_value'
-);
+SELECT column1, column2 FROM table_name WHERE condition;
 ```
 **Question 1**
+--
+```
+Write a SQL statement to Increase quantity of all products by 10% to adjust for surplus stock counted
 
-  <img width="1185" height="724" alt="Screenshot 2025-09-10 132504" src="https://github.com/user-attachments/assets/3df0a1f0-b250-4497-a596-80d488c01975" />
+Products table
 
+---------------
+product_id
+product_name
+category
+cost_price
+sell_price
+reorder_lvl
+quantity
+supplier_id
+```
+```sql
+update Products 
+set
+quantity=(quantity*1.1);
+```
 
-  
-**Output**:
+**Output:**
 
-<img width="1181" height="328" alt="Screenshot 2025-09-10 132515" src="https://github.com/user-attachments/assets/2f21ebe4-239d-4846-b805-21ff9eb00bf9" />
-
+<img width="1182" height="609" alt="image" src="https://github.com/user-attachments/assets/7f7fd885-707d-42eb-a3f7-26341540083f" />
 
 
 **Question 2**
+---
+```
+Write a SQL statement to Change the category to 'Household' where product name contains 'Detergent' in the products table.
 
+Products Table 
 
+name          type       
+----------    ---------- 
+product_id     INT PRIMARY KEY        
+product_name   VARCHAR(10) 
+category       VARCHAR(50) 
+cost_price     DECIMAL(10) 
+sell_price     DECIMAL(10) 
+reorder_lvl    INT        
+quantity       INT        
+supplier_id    INT
+```
 
-
-<img width="731" height="487" alt="Screenshot 2025-09-10 132906" src="https://github.com/user-attachments/assets/5244bde6-b1ee-4010-83ef-e1a52ef7a2cb" />
-
-
-
+```sql
+update products set
+category="Household"
+where product_name like "%Detergent%";
+```
 
 **Output:**
 
-
-
-
-<img width="1191" height="288" alt="Screenshot 2025-09-10 132914" src="https://github.com/user-attachments/assets/8664870a-e1d1-4a3a-a9ba-11fa3e096df6" />
-
-
+<img width="1184" height="483" alt="image" src="https://github.com/user-attachments/assets/a29aa0c5-4c9c-4b5c-9319-675476a6c77a" />
 
 
 **Question 3**
+---
+```
+Write a SQL statement to Increase the selling price by 10% for all products in the 'Bakery' category in the products table.
 
+Products table
 
+---------------
+product_id
+product_name
+category
+cost_price
+sell_price
+reorder_lvl
+quantity
+supplier_id
+```
 
-
-<img width="1200" height="588" alt="Screenshot 2025-09-10 133033" src="https://github.com/user-attachments/assets/a3d1b8b2-76ce-4747-89cf-12929c05733a" />
-
-
+```sql
+update Products set
+sell_price=sell_price*1.1
+where category = "Bakery";
+```
 
 **Output:**
 
-
-
-<img width="1206" height="318" alt="Screenshot 2025-09-10 133041" src="https://github.com/user-attachments/assets/c8b91103-662d-4bd3-9541-a248a987f54f" />
-
-
-
+<img width="1181" height="509" alt="image" src="https://github.com/user-attachments/assets/9e6f783d-f025-4bd0-a1d1-c22e5db6b7a4" />
 
 
 **Question 4**
+---
+```
+Write a SQL statement to Increase the salary by 500 and email as 'updated' for employees with job ID 'SA_REP' and commission percentage greater than 0.15
 
+Employees table
 
+---------------
+employee_id
+first_name
+last_name
+email
+phone_number
+hire_date
+job_id
+salary
+commission_pct
+manager_id
+department_id
+```
 
-
-
-<img width="1203" height="702" alt="Screenshot 2025-09-10 133230" src="https://github.com/user-attachments/assets/eb2fba9b-55b3-42c5-8503-b7404a418b8f" />
-
-
-
+```sql
+update Employees set
+salary=salary+500 , email = "updated"
+where job_id="SA_REP" and commission_pct>0.15;
+```
 
 **Output:**
 
-
-
-
-<img width="1207" height="370" alt="Screenshot 2025-09-10 133236" src="https://github.com/user-attachments/assets/fda534f4-fbe5-42da-9c04-d894ce1e8077" />
-
-
+<img width="1182" height="521" alt="image" src="https://github.com/user-attachments/assets/1e587966-c239-4859-a756-6da584da735e" />
 
 **Question 5**
+---
+```
+ Update the total selling price to quantity sold multiplied by updated selling price per unit where product id is 10 in the sales table.
 
-
-
-
-<img width="1175" height="408" alt="Screenshot 2025-09-10 133322" src="https://github.com/user-attachments/assets/a5d41da1-52f8-43f5-adba-f93be615c8d4" />
-
-
-
-
+SALES TABLE
+name               type
+-----------------  ---------------
+sale_id            INT
+sale_date          DATE
+product_id         INT
+quantity           INT
+sell_price         DECIMAL(10,2)
+total_sell_price   DECIMAL(10,2)
+```
+```sql
+update Sales set
+total_sell_price = quantity*sell_price
+where product_id = 10;
+```
 
 **Output:**
 
-
-
-
-
-
-<img width="1203" height="255" alt="Screenshot 2025-09-10 133328" src="https://github.com/user-attachments/assets/0ba0ec1f-0366-48c3-82df-bc35500b7c89" />
-
-
-
+<img width="1184" height="486" alt="image" src="https://github.com/user-attachments/assets/75ddabe7-3705-478b-9fdb-b6ed3480c6a7" />
 
 
 **Question 6**
+---
+```
+Write a SQL query to Delete a Specific Surgery which was made on 28th Feb 2024.
 
+Sample table: Surgeries
 
-
-
-<img width="1024" height="686" alt="Screenshot 2025-09-10 133421" src="https://github.com/user-attachments/assets/944b2595-9a7f-4065-8380-c47959c319f9" />
-
-
-
-
+attributes: surgery_id, patient_id, surgeon_id, surgery_date
+```
+```sql
+delete from surgeries where surgery_date="2024-02-28";
+```
 
 **Output:**
 
-
-
-
-
-
-<img width="1187" height="339" alt="Screenshot 2025-09-10 133427" src="https://github.com/user-attachments/assets/990cafd9-87b7-4953-b366-c531a31742b6" />
-
-
-
-
-
+<img width="1183" height="374" alt="image" src="https://github.com/user-attachments/assets/ea074a82-f03a-48e3-8b9f-aae020c8745d" />
 
 
 **Question 7**
+---
+```
+Write a SQL query to delete a doctor from Doctors table whos specialization is 'Cardiology'
 
+Sample table: Doctors
 
+attributes : doctor_id, first_name, last_name, specialization
+```
 
-
-
-<img width="1186" height="659" alt="Screenshot 2025-09-10 133501" src="https://github.com/user-attachments/assets/aa5bb0bf-082a-4d6a-a3f2-45264eecf7a2" />
-
-
-
-
+```sql
+delete from Doctors where specialization="Cardiology";
+```
 
 **Output:**
 
-
-
-
-
-<img width="1206" height="297" alt="Screenshot 2025-09-10 133508" src="https://github.com/user-attachments/assets/60f62a50-46b9-4c9b-baf3-747875270949" />
-
-
-
-
-
+<img width="1190" height="374" alt="image" src="https://github.com/user-attachments/assets/b0984549-ffcd-49a2-b66b-b9955f29f680" />
 
 
 **Question 8**
+---
+```
+Write a SQL statement to Display the order number, orderdate and the purchase amount of
+orders table which will be delivered by the salesman with ID 5001.
 
+orders table
 
+name                 type
+---------------     ---------------
+order_no            int
+purch_amt         real
+order_date        text
+customer_id      int
+salesman_id      int
+```
 
-
-
-
-<img width="1174" height="700" alt="Screenshot 2025-09-10 133534" src="https://github.com/user-attachments/assets/cc6e5b56-8909-48aa-bcd3-4875d42ee67a" />
-
-
-
-
+```sql
+select order_no,order_date,purch_amt from orders where salesman_id = 5001;
+```
 
 **Output:**
 
-<img width="1204" height="337" alt="Screenshot 2025-09-10 133545" src="https://github.com/user-attachments/assets/e919c20a-8822-48ce-a58b-78020e0c430d" />
-
-
-
+<img width="905" height="396" alt="image" src="https://github.com/user-attachments/assets/4399ddc9-ae52-43f5-bbab-1d64241fbac9" />
 
 
 **Question 9**
+---
+```
+write a SQL query to identify customers who do not belong to the city of 'New York' or have a grade value that exceeds 100. Return customer_id, cust_name, city, grade, and salesman_id.
 
+Sample table: customer
 
+ customer_id |   cust_name    |    city    | grade | salesman_id 
+-------------+----------------+------------+-------+-------------
+        3002 | Nick Rimando   | New York   |   100 |        5001
+        3007 | Brad Davis     | New York   |   200 |        5001
+        3005 | Graham Zusi    | California |   200 |        5002
+```
 
-
-
-<img width="1036" height="574" alt="Screenshot 2025-09-10 133605" src="https://github.com/user-attachments/assets/38e0ab0e-013c-41db-976e-33855babe6e2" />
-
-
-
-
-
+```sql
+select * from customer where city <> "New York" and grade = 100;
+```
 
 **Output:**
 
-
-
-
-
-<img width="1189" height="376" alt="Screenshot 2025-09-10 133610" src="https://github.com/user-attachments/assets/66ecc984-6e3f-4c04-94df-42302c9501f5" />
-
-
-
-
+<img width="1186" height="392" alt="image" src="https://github.com/user-attachments/assets/586d242a-0230-4e74-a359-b00dbda4c342" />
 
 
 **Question 10**
+---
+```
+Write a SQL query to calculate the discounted price for products where the discount percentage is greater than 0, and order the results by discounted_price in ascending order. Return product_id, original_price, discount_percentage, and discounted_price.
 
+Sample table: Products
 
+product_id | original_price | discount_percentage 
 
+------------+----------------+--------------------- 
 
+101 | 50.00 | 0.10 
 
-<img width="1168" height="657" alt="Screenshot 2025-09-10 133632" src="https://github.com/user-attachments/assets/d23fc967-87a6-4d3f-8346-7c350a1b5a70" />
+102 | 75.00 | 0.00 
 
+103 | 100.00 | 0.20
+```
 
-
-
-
+```sql
+select product_id,original_price,discount_percentage,original_price-(original_price*discount_percentage) as discounted_price 
+from Products
+where discount_percentage > 0 order by discounted_price;
+```
 
 **Output:**
 
-
-
-
-
-
-<img width="1271" height="299" alt="Screenshot 2025-09-10 133639" src="https://github.com/user-attachments/assets/e8b59ed0-49a2-44d2-9b5e-6ea6ef5405d2" />
-
-
-
+<img width="1186" height="276" alt="image" src="https://github.com/user-attachments/assets/4208d9e6-f671-4269-afef-e8b81b7bc79b" />
 
 
 ## RESULT
-Thus, the SQL queries to implement different types of constraints and DDL commands have been executed successfully.
+Thus, the SQL queries to implement DML commands have been executed successfully.
